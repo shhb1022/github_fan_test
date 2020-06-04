@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>로그인</title>
+    <style>
+        #window{width: 500px; height: 300px; text-align: center; border: 5px double;}
+        #id{margin-top: 100px; margin-left: 10px; }
+        #password{margin-top: 10px; }
+        .button{width: 80px; height: 20px; margin: 15px;}
+        .button:hover{
+            background-color: lightsalmon;
+            color: white;
+        }
+        span {display: block;}
+    </style>
+</head>
+<body>
+<div id = "window">
+    <span>id : <input id="id" type="text"></span>
+    <span>pw : <input id="password" type="password"></span>
+    <input class="button" type="button" value="login" onclick="login()"> <br>
+    <a href="./join.html">회원가입 페이지로 이동</a>
+</div>
+</body>
+<script>
+    const login = () => {
+        const myID = document.getElementById("id").value;
+        const myPW = document.getElementById("password").value;
+        if(!myID)
+            alert("아이디를 입력해주세요.");
+        else if(!myPW)
+            alert("비밀번호를 입력해주세요.");
+        else{
+            let data = {
+                id: myID,
+                password: myPW};
+            fetch('https://fan.catholic.ac.kr:5000/login', {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers:{
+                    'Content-Type': 'application/json'
+                }
+            }).then(re => re.json())
+                .then(response => {
+                    if(response.message) alert( response.message + '\n' + "name: " + response.name)
+                    else alert(JSON.stringify(response))
+                })
+        }
+    }
+</script>
+</html>
