@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>구구단</title>
+    <style>
+        #buttons {display: inline-block; padding: 0 10px;}
+        .button {padding: 20px 80px; background-color: lightpink;}
+        .button:hover { cursor:pointer; background-color: lightsalmon; color: white;}
+        #result {display: block; text-align: center; padding: 30px;}
+    </style>
+</head>
+<body>
+<div id = "buttons">
+    <input class="button" type="button" value="1단" onclick="cli(1)">
+    <input class="button" type="button" value="2단" onclick="cli(2)">
+    <input class="button" type="button" value="3단" onclick="cli(3)">
+    <input class="button" type="button" value="4단" onclick="cli(4)">
+    <input class="button" type="button" value="5단" onclick="cli(5)">
+    <input class="button" type="button" value="6단" onclick="cli(6)">
+    <input class="button" type="button" value="7단" onclick="cli(7)">
+    <input class="button" type="button" value="8단" onclick="cli(8)">
+    <input class="button" type="button" value="9단" onclick="cli(9)">
+</div>
+<span id = "result"></span>
+</body>
+<script>
+    const cli = (num) => {
+        fetch('https://fan.catholic.ac.kr:5000/multi?dan='+num, {
+            method : 'GET'
+        }).then(response => response.json()
+            .then(data => {
+                    let text = " "
+                    for(let i = 0; i < 9; i++){
+                        text += data[i] + "<br>"
+                    }
+                    document.getElementById("result").innerHTML = text
+                }
+            ))
+    }
+</script>
+</html>
