@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+    <style>
+        #window{width: 500px; height: 300px; text-align: center; border: 5px double;}
+        #name{margin-top: 80px;}
+        #id{margin-top: 10px; margin-left: 10px; }
+        #password{margin-top: 10px; }
+        #password_check{margin-left: 5px; margin-top:10px; }
+        .button{width: 80px; height: 20px; margin: 20px;}
+        .button:hover{
+            background-color: lightsalmon;
+            color: white;
+        }
+        span{display: block;}
+    </style>
+</head>
+<body>
+<div id = "window">
+    <span >name <input id="name" type="text"></span>
+    <span>id <input id="id" type="text"></span>
+    <span>pw <input id="password" type="password"></span>
+    <span>pw_check <input id="password_check" type="password"></span>
+    <input class="button" type="button" value="login" onclick="join()"> <br>
+    <a href="./login.html">로그인 페이지로 이동</a>
+</div>
+</body>
+<script>
+    const join = () => {
+        const inputName = document.getElementById("name").value;
+        const inputID = document.getElementById("id").value;
+        const inputPW = document.getElementById("password").value;
+        const inputPWCheck = document.getElementById("password_check").value;
+        if(!inputName) alert("이름을 입력해주세요.");
+        else if(!inputID) alert("아이디를 입력해주세요.");
+        else if(!inputPW) alert("비밀번호를 입력해주세요.");
+        else if(inputPW != inputPWCheck) alert("두 비밀번호가 다릅니다.");
+        else{
+            let data = {
+                name: inputName,
+                id: inputID,
+                password: inputPW,
+                passwordCheck: inputPWCheck
+            };
+            fetch('https://fan.catholic.ac.kr:5000/join', {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers:{
+                    'Content-Type': 'application/json'
+                }
+            }).then(res => res.json())
+                .then(response => {
+                    if(response.code == "03") alert("동일한 아이디가 존재합니다.")
+                    else if(response.msg == "success"){
+                        alert("회원가입을 성공했습니다.")
+                        window.location.href = "./login.html"
+                    }
+                })
+        }
+    }
+</script>
+</html>
